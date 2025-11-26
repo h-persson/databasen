@@ -24,8 +24,7 @@ INSERT INTO skill (skill_description) VALUES
 INSERT INTO teaching_activity (activity_name, factor, hp_factor, student_factor) VALUES 
 ('Lecture',             4.0, 0,   0),
 ('Seminar',             2.0, 0,   0),
-('Lab Supervision',     1.5, 0,   0),
-('Project Supervision', 1.0, 0,   0),
+('Laboration',     1.5, 0,   0),
 ('Examination',         1.0, 0,   0.5),
 ('Course Admin',        1.0, 2.0, 0.1);
 
