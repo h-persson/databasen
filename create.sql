@@ -147,8 +147,7 @@ ALTER TABLE planned_activity ADD CONSTRAINT PK_planned_activity PRIMARY KEY (pla
 
 CREATE TABLE allocation (
  employee_id INT NOT NULL,
- planned_activity_id INT NOT NULL,
- allocated_hours DECIMAL(6, 2) NOT NULL
+ planned_activity_id INT NOT NULL
 );
 
 ALTER TABLE allocation ADD CONSTRAINT PK_allocation PRIMARY KEY (employee_id,planned_activity_id);
