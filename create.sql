@@ -107,8 +107,7 @@ CREATE TABLE teaching_activity (
  activity_name VARCHAR(200) NOT NULL,
  factor DECIMAL(10, 3) DEFAULT 1 NOT NULL,
  hp_factor DECIMAL(10, 3) DEFAULT 0 NOT NULL,
- student_factor DECIMAL(10, 3) DEFAULT 0 NOT NULL,
- base_hours DECIMAL(15, 5) DEFAULT 0 NOT NULL
+ student_factor DECIMAL(10, 3) DEFAULT 0 NOT NULL
 );
 
 ALTER TABLE teaching_activity ADD CONSTRAINT PK_teaching_activity PRIMARY KEY (teaching_activity_id);
