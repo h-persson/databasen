@@ -5,8 +5,6 @@ SELECT
     ci.study_year,
     sp.period_name,
     e.employee_id,
-    p.first_name,
-    p.last_name,
     p.first_name || ' ' || p.last_name AS teacher_name,
     COUNT(DISTINCT a.course_instance_id) AS no_of_courses
 FROM allocation a
