@@ -1,5 +1,5 @@
 -- Query 3: Total allocated hours for specific teacher and specific year
--- Usage: SELECT * FROM view_teacher_load WHERE first_name = 'Niharika' AND study_year = 2025;
+-- Usage: SELECT * FROM view_teacher_load WHERE teacher_name = 'Niharika Gauraha' AND study_year = 2025;
 CREATE OR REPLACE VIEW view_teacher_load AS
 SELECT 
     ci.study_year,
@@ -7,8 +7,6 @@ SELECT
     ci.course_instance_id,
     sp.period_name,
     e.employee_id,
-    p.first_name,
-    p.last_name,
     p.first_name || ' ' || p.last_name AS teacher_name,
     SUM(CASE WHEN ta.activity_name = 'Lecture' THEN a.allocated_hours * ta.factor ELSE 0 END) AS lecture_hours,
     SUM(CASE WHEN ta.activity_name = 'Tutorial' THEN a.allocated_hours * ta.factor ELSE 0 END) AS tutorial_hours,
