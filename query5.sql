@@ -1,6 +1,9 @@
--- Workload 4: Variance > 15% between planned and allocated (Frequency: 3x/day)
+-- Query 5: Variance > 15% between planned and allocated
+-- Usage: SELECT * FROM view_variance_check WHERE study_year = 2025;
+CREATE OR REPLACE VIEW view_variance_check AS
 WITH Planned AS (
     SELECT 
+        ci.study_year,
         ci.course_instance_id,
         cl.course_code,
         cl.course_name,
@@ -9,8 +12,7 @@ WITH Planned AS (
     JOIN teaching_activity ta ON pa.teaching_activity_id = ta.teaching_activity_id
     JOIN course_instance ci ON pa.course_instance_id = ci.course_instance_id
     JOIN course_layout cl ON ci.course_layout_id = cl.course_layout_id
-    WHERE ci.study_year = 2025
-    GROUP BY ci.course_instance_id, cl.course_code, cl.course_name
+    GROUP BY ci.study_year, ci.course_instance_id, cl.course_code, cl.course_name
 ),
 Allocated AS (
     SELECT 
@@ -19,10 +21,10 @@ Allocated AS (
     FROM course_instance ci
     LEFT JOIN allocation a ON ci.course_instance_id = a.course_instance_id
     LEFT JOIN teaching_activity ta ON a.teaching_activity_id = ta.teaching_activity_id
-    WHERE ci.study_year = 2025
     GROUP BY ci.course_instance_id
 )
 SELECT 
+    p.study_year,
     p.course_instance_id,
     p.course_code,
     p.course_name,
