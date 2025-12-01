@@ -1,335 +1,224 @@
 BEGIN;
 
+INSERT INTO constants (constant_description, constant_value) VALUES
+  ('max_courses_per_period', 4.00000),
+  ('exam_base_hours',        32.00000),
+  ('exam_student_factor',     0.72500),
+  ('admin_base_hours',       28.00000),
+  ('admin_student_factor',    0.20000),
+  ('admin_hp_factor',         2.00000);
+
 INSERT INTO job_title (job_title) VALUES
-  ('Professor'),
-  ('Associate Professor'),
-  ('Lecturer'),
-  ('PhD Student'),
-  ('Teaching Assistant');
+  ('Boss'),              -- id 1
+  ('Professor'),         -- id 2
+  ('Associate Professor'), -- id 3
+  ('Lecturer'),          -- id 4
+  ('Teaching Assistant'),-- id 5
+  ('PhD Student');       -- id 6
+
+INSERT INTO person (personal_number, first_name, last_name, address, phone_number) VALUES
+  ('19780101-1234', 'Fadil',    'Kovacevic', 'Lindstedtsvagen 1, 114 28 Stockholm', '+46-70-0000001'), -- id 1
+  ('19830515-5678', 'Paris',    'Carbone',   'Valhallavagen 79, 114 28 Stockholm',  '+46-70-0000002'), -- id 2
+  ('19751212-9012', 'Leif',     'Lindback',  'Drottning Kristinas vag 15, 114 28 Stockholm', '+46-70-0000003'), -- id 3
+  ('19900130-3456', 'Niharika', 'Gauraha',   'Teknikringen 33, 114 28 Stockholm',  '+46-70-0000004'), -- id 4
+  ('19930520-7890', 'Brian',    'Nguyen',    'Brinellvagen 8, 114 28 Stockholm',    '+46-70-0000005'), -- id 5
+  ('19981111-1111', 'Adam',     'Svensson',  'Osquars backe 12, 114 28 Stockholm',  '+46-70-0000006'), -- id 6
+  ('19740202-2222', 'Sara', 'Johansson',  'Lindstedtsvagen 5, 114 28 Stockholm', '+46-70-0000007'), -- id 7
+  ('19881120-3333', 'Olof', 'Pettersson', 'Brinellvagen 20, 114 28 Stockholm',   '+46-70-0000008'), -- id 8
+  ('19970214-4444', 'Maja', 'Ek',         'Teknikringen 50, 114 28 Stockholm',   '+46-70-0000009'); -- id 9
 
 INSERT INTO department (department_name, manager_employee_id) VALUES
-  ('EECS', NULL),
-  ('SCI', NULL),
-  ('ITM', NULL);
+  ('Mathematics', 1),
+  ('Technology',  1);
 
-INSERT INTO person (personal_number, first_name, last_name, address) VALUES
-  ('19750101-1234', 'Paris', 'Carbone', 'KTH Campus, Stockholm'),
-  ('19691212-2345', 'Leif', 'Linbäck', 'Kista, Stockholm'),
-  ('19880202-3456', 'Niharika', 'Gauraha', 'Solna, Stockholm'),
-  ('19790909-4567', 'Anna', 'Svensson', 'Södermalm, Stockholm'),
-  ('19930303-5678', 'Brian', 'Holm', 'Flemingsberg, Stockholm'),
-  ('19970707-6789', 'Adam', 'Nilsson', 'Täby, Stockholm'),
-  ('19851111-7890', 'Karin', 'Dahl', 'Uppsala'),
-  ('19940404-8901', 'Oskar', 'Lund', 'Vallentuna'),
-  ('19860606-9012', 'Maja', 'Berg', 'Norrmalm, Stockholm'),
-  ('19980808-0123', 'Erik', 'Johansson', 'Sundbyberg');
-
-INSERT INTO employee (employee_id, person_id, supervisor_employee_id, job_title_id, department_id) VALUES
-  ('E1001',
-    (SELECT person_id FROM person WHERE personal_number='19750101-1234'),
-    NULL,
-    (SELECT job_title_id FROM job_title WHERE job_title='Professor'),
-    (SELECT department_id FROM department WHERE department_name='EECS')
-  ),
-  ('E1002',
-    (SELECT person_id FROM person WHERE personal_number='19691212-2345'),
-    'E1001',
-    (SELECT job_title_id FROM job_title WHERE job_title='Lecturer'),
-    (SELECT department_id FROM department WHERE department_name='EECS')
-  ),
-  ('E2001',
-    (SELECT person_id FROM person WHERE personal_number='19880202-3456'),
-    NULL,
-    (SELECT job_title_id FROM job_title WHERE job_title='Associate Professor'),
-    (SELECT department_id FROM department WHERE department_name='SCI')
-  ),
-  ('E3001',
-    (SELECT person_id FROM person WHERE personal_number='19790909-4567'),
-    NULL,
-    (SELECT job_title_id FROM job_title WHERE job_title='Professor'),
-    (SELECT department_id FROM department WHERE department_name='ITM')
-  ),
-  ('E1003',
-    (SELECT person_id FROM person WHERE personal_number='19930303-5678'),
-    'E1001',
-    (SELECT job_title_id FROM job_title WHERE job_title='PhD Student'),
-    (SELECT department_id FROM department WHERE department_name='EECS')
-  ),
-  ('E1004',
-    (SELECT person_id FROM person WHERE personal_number='19970707-6789'),
-    'E1002',
-    (SELECT job_title_id FROM job_title WHERE job_title='Teaching Assistant'),
-    (SELECT department_id FROM department WHERE department_name='EECS')
-  ),
-  ('E2002',
-    (SELECT person_id FROM person WHERE personal_number='19851111-7890'),
-    'E2001',
-    (SELECT job_title_id FROM job_title WHERE job_title='Lecturer'),
-    (SELECT department_id FROM department WHERE department_name='SCI')
-  ),
-  ('E2003',
-    (SELECT person_id FROM person WHERE personal_number='19940404-8901'),
-    'E2001',
-    (SELECT job_title_id FROM job_title WHERE job_title='PhD Student'),
-    (SELECT department_id FROM department WHERE department_name='SCI')
-  ),
-  ('E3002',
-    (SELECT person_id FROM person WHERE personal_number='19860606-9012'),
-    'E3001',
-    (SELECT job_title_id FROM job_title WHERE job_title='Lecturer'),
-    (SELECT department_id FROM department WHERE department_name='ITM')
-  ),
-  ('E3003',
-    (SELECT person_id FROM person WHERE personal_number='19980808-0123'),
-    'E3002',
-    (SELECT job_title_id FROM job_title WHERE job_title='Teaching Assistant'),
-    (SELECT department_id FROM department WHERE department_name='ITM')
-  );
-
-UPDATE department SET manager_employee_id='E1001' WHERE department_name='EECS';
-UPDATE department SET manager_employee_id='E2001' WHERE department_name='SCI';
-UPDATE department SET manager_employee_id='E3001' WHERE department_name='ITM';
-
-INSERT INTO phone_number (person_id, phone_number, comment)
-SELECT person_id, phone, 'mobile'
-FROM (
-  VALUES
-    ('19750101-1234', '+46 70 111 11 11'),
-    ('19691212-2345', '+46 70 222 22 22'),
-    ('19880202-3456', '+46 70 333 33 33'),
-    ('19790909-4567', '+46 70 444 44 44'),
-    ('19930303-5678', '+46 70 555 55 55'),
-    ('19970707-6789', '+46 70 666 66 66'),
-    ('19851111-7890', '+46 70 777 77 77'),
-    ('19940404-8901', '+46 70 888 88 88'),
-    ('19860606-9012', '+46 70 999 99 99'),
-    ('19980808-0123', '+46 70 000 00 00')
-) AS v(pnr, phone)
-JOIN person p ON p.personal_number=v.pnr;
+INSERT INTO employee (person_id, supervisor_employee_id, job_title_id, department_id) VALUES
+  (1, NULL, 1, 2), -- Fadil, Boss, Technology, no supervisor, not allocated anywhere
+  (2, 1,    3, 2), -- Paris Carbone, Associate Professor, supervisor Fadil, Technology
+  (3, 2,    4, 1), -- Leif Lindback, Lecturer, supervisor Paris, Mathematics
+  (4, 2,    4, 2), -- Niharika Gauraha, Lecturer, supervisor Paris, Technology
+  (5, 3,    6, 1), -- Brian Nguyen, PhD Student, supervisor Leif, Mathematics
+  (6, 3,    5, 1), -- Adam Svensson, Teaching Assistant, supervisor Leif, Mathematics
+  (7, 2,    2, 1), -- Sara, Professor, Mathematics, supervisor Paris
+  (8, 7,    4, 1), -- Olof, Lecturer, Mathematics, supervisor Sara
+  (9, 2,    5, 2); -- Maja, TA, Technology, supervisor Paris
 
 INSERT INTO salary (employee_id, salary_date, salary) VALUES
-  ('E1001','2024-01-01', 72000), ('E1001','2025-01-01', 75000),
-  ('E1002','2024-01-01', 52000), ('E1002','2025-01-01', 54000),
-  ('E2001','2024-01-01', 68000), ('E2001','2025-01-01', 70000),
-  ('E3001','2024-01-01', 70000), ('E3001','2025-01-01', 72000),
-  ('E1003','2024-01-01', 36000), ('E1003','2025-01-01', 38000),
-  ('E1004','2024-01-01', 31000), ('E1004','2025-01-01', 32000),
-  ('E2002','2024-01-01', 50000), ('E2002','2025-01-01', 51500),
-  ('E2003','2024-01-01', 35000), ('E2003','2025-01-01', 36500),
-  ('E3002','2024-01-01', 49500), ('E3002','2025-01-01', 51000),
-  ('E3003','2024-01-01', 30000), ('E3003','2025-01-01', 31000);
+  (1, '2025-01-31', 500.00), -- Fadil
+  (2, '2025-01-31', 450.00), -- Paris
+  (3, '2025-01-31', 400.00), -- Leif
+  (4, '2025-01-31', 400.00), -- Niharika
+  (5, '2025-01-31', 250.00), -- Brian
+  (6, '2025-01-31', 220.00), -- Adam
+  (7, '2025-01-31', 480.00),
+  (8, '2025-01-31', 390.00),
+  (9, '2025-01-31', 230.00),
+
+  (1, '2025-05-28', 550.00),
+  (2, '2025-06-20', 460.00),
+  (3, '2025-04-28', 420.00),
+  (4, '2025-05-21', 420.00),
+  (5, '2025-05-22', 260.00),
+  (6, '2025-05-24', 230.00),
+  (7, '2025-02-28', 490.00),
+  (8, '2025-02-28', 395.00),
+  (9, '2025-02-28', 235.00);
 
 INSERT INTO skill (skill_description) VALUES
-  ('Databases'),
-  ('Discrete Mathematics'),
-  ('Programming'),
-  ('Computer Networks'),
-  ('Pedagogy'),
-  ('Algorithms'),
-  ('Machine Learning');
+  ('Database Systems'),     -- id 1
+  ('Functional Programming'), -- id 2
+  ('Discrete Mathematics'), -- id 3
+  ('Algorithms'),           -- id 4
+  ('Teaching Support');     -- id 5
 
 INSERT INTO skill_set (employee_id, skill_id) VALUES
-  ('E1001', (SELECT skill_id FROM skill WHERE skill_description='Databases')),
-  ('E1001', (SELECT skill_id FROM skill WHERE skill_description='Pedagogy')),
-  ('E1002', (SELECT skill_id FROM skill WHERE skill_description='Databases')),
-  ('E1002', (SELECT skill_id FROM skill WHERE skill_description='Programming')),
-  ('E2001', (SELECT skill_id FROM skill WHERE skill_description='Discrete Mathematics')),
-  ('E2001', (SELECT skill_id FROM skill WHERE skill_description='Algorithms')),
-  ('E2002', (SELECT skill_id FROM skill WHERE skill_description='Algorithms')),
-  ('E2002', (SELECT skill_id FROM skill WHERE skill_description='Pedagogy')),
-  ('E2003', (SELECT skill_id FROM skill WHERE skill_description='Machine Learning')),
-  ('E3001', (SELECT skill_id FROM skill WHERE skill_description='Pedagogy')),
-  ('E3002', (SELECT skill_id FROM skill WHERE skill_description='Computer Networks')),
-  ('E3002', (SELECT skill_id FROM skill WHERE skill_description='Programming')),
-  ('E3003', (SELECT skill_id FROM skill WHERE skill_description='Programming'));
+  (2, 1), (2, 2),           -- Paris
+  (3, 3), (3, 4),           -- Leif
+  (4, 1), (4, 4),           -- Niharika
+  (5, 3),                   -- Brian
+  (6, 5),                   -- Adam
+  (7, 3), (7, 4),  -- Sara: Discrete Math, Algorithms
+  (8, 1), (8, 3),  -- Olof: Database Systems, Discrete Math
+  (9, 5);          -- Maja: Teaching Support
 
 INSERT INTO study_period (period_name, period_start_date, period_end_date) VALUES
-  ('P1','2025-01-13','2025-03-16'),
-  ('P2','2025-03-17','2025-06-01'),
-  ('P3','2025-08-25','2025-10-26'),
-  ('P4','2025-10-27','2025-12-14');
+  ('P1', '2025-01-15', '2025-03-20'), -- id 1
+  ('P2', '2025-03-21', '2025-06-01'), -- id 2
+  ('P3', '2025-08-25', '2025-10-25'), -- id 3
+  ('P4', '2025-10-26', '2025-12-22'); -- id 4
 
-INSERT INTO limits (limit_description, limit_value) VALUES
-  ('max_course_instances_per_teacher_per_period', 4);
+INSERT INTO course_layout (course_code, course_name, version, hp, min_students, max_students) VALUES
+  ('IV1351', 'Data Storage Paradigms',             1, 7.5, 50, 250), -- id 1
+  ('IX1500', 'Discrete Mathematics',               1, 7.5, 50, 150), -- id 2
+  ('ID2214', 'Algorithms and Data Structures',     1, 7.5, 40, 200), -- id 3
+  ('SF1624', 'Algebra and Geometry',               1, 7.5, 60, 250), -- id 4
+  ('DD1310', 'Programming Techniques',             1, 7.5, 80, 300); -- id 5
 
-INSERT INTO teaching_activity (activity_name, factor, hp_factor, student_factor, base_hours) VALUES
-  ('Lecture',        3.6, 0,     0,     0),
-  ('Lab',            2.4, 0,     0,     0),
-  ('Tutorial',       2.4, 0,     0,     0),
-  ('Seminar',        1.8, 0,     0,     0),
-  ('Examination',    1.0, 0, 0.725,    32),
-  ('Administration', 1.0, 2,   0.2,    28),
-  ('Others',         1.0, 0,     0,     0);
+INSERT INTO teaching_activity (activity_name, factor) VALUES
+  ('Lecture',         3.60000), -- id 1
+  ('Lab',             2.40000), -- id 2
+  ('Tutorial',        2.40000), -- id 3
+  ('Seminar',         1.80000), -- id 4
+  ('Other Overhead',  1.00000), -- id 5
+  ('Admin',           1.00000), -- id 6
+  ('Exam',            1.00000); -- id 7
 
-INSERT INTO course_layout (course_code, course_name, min_students, max_students, hp, version) VALUES
-  ('IV1351','Data Storage Paradigms', 50, 250, 7.5, 1),
-  ('IV1351','Data Storage Paradigms', 50, 250, 15.0, 2),
-  ('IX1500','Discrete Mathematics',   50, 150, 7.5, 1),
-  ('ID2214','Programming II',         40, 200, 7.5, 1),
-  ('IV1350','Data Communication Basics', 40, 200, 7.5, 1);
+INSERT INTO course_instance (course_instance_id, num_students, course_layout_id, study_year, study_period_id) VALUES
+  ('2025-50273', 200, 1, 2025, 2), -- IV1351, P2 2025
+  ('2025-50413', 150, 2, 2025, 1), -- IX1500, P1 2025
+  ('2025-50341',  80, 3, 2025, 2), -- ID2214, P2 2025
+  ('2025-60104', 140, 4, 2025, 3), -- SF1624, P3 2025
+  ('2025-60201', 180, 5, 2025, 4), -- DD1310, P4 2025
+  ('2025-50399',  60, 3, 2025, 3); -- extra ID2214, P3 2025
 
-INSERT INTO course_instance (course_instance_id, num_students, study_year, course_layout_id, study_period_id) VALUES
-  ('2025-50273', 180, 2025,
-    (SELECT course_layout_id FROM course_layout WHERE course_code='IV1351' AND version=1),
-    (SELECT study_period_id FROM study_period WHERE period_name='P1')
-  ),
-  ('2025-50274', 200, 2025,
-    (SELECT course_layout_id FROM course_layout WHERE course_code='IV1351' AND version=2),
-    (SELECT study_period_id FROM study_period WHERE period_name='P2')
-  ),
-  ('2025-50413', 150, 2025,
-    (SELECT course_layout_id FROM course_layout WHERE course_code='IX1500' AND version=1),
-    (SELECT study_period_id FROM study_period WHERE period_name='P1')
-  ),
-  ('2025-50341', 120, 2025,
-    (SELECT course_layout_id FROM course_layout WHERE course_code='ID2214' AND version=1),
-    (SELECT study_period_id FROM study_period WHERE period_name='P2')
-  ),
-  ('2025-60104',  90, 2025,
-    (SELECT course_layout_id FROM course_layout WHERE course_code='IV1350' AND version=1),
-    (SELECT study_period_id FROM study_period WHERE period_name='P3')
-  );
+INSERT INTO planned_activity (course_instance_id, teaching_activity_id, planned_hours) VALUES
+-- IV1351 (2025-50273, P2)
+  ('2025-50273', 1, 40.0), -- Lecture
+  ('2025-50273', 2, 50.0), -- Lab
+  ('2025-50273', 3, 30.0), -- Tutorial
+  ('2025-50273', 4, 24.0), -- Seminar
+  ('2025-50273', 5, 40.0), -- Other Overhead
+  ('2025-50273', 6, calc_admin_hours('2025-50273')), -- Admin (derived)
+  ('2025-50273', 7, calc_exam_hours('2025-50273')), -- Exam  (derived)
 
-INSERT INTO planned_activity (planned_hours, course_instance_id, teaching_activity_id) VALUES
-  (18,   '2025-50273', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Lecture')),
-  (70,   '2025-50273', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Tutorial')),
-  (35,   '2025-50273', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Lab')),
-  (60,   '2025-50273', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Seminar')),
-  (500,  '2025-50273', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Others')),
-  (79,   '2025-50273', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Administration')),
-  (162.5,'2025-50273', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Examination'));
+  -- IX1500 (2025-50413, P1)
+  ('2025-50413', 1, 36.0), -- Lecture
+  ('2025-50413', 3, 32.0), -- Tutorial
+  ('2025-50413', 5, 20.0), -- Other Overhead
+  ('2025-50413', 6, calc_admin_hours('2025-50413')), -- Admin (derived)
+  ('2025-50413', 7, calc_exam_hours('2025-50413')), -- Exam  (derived)
 
-INSERT INTO planned_activity (planned_hours, course_instance_id, teaching_activity_id) VALUES
-  (20,  '2025-50274', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Lecture')),
-  (80,  '2025-50274', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Tutorial')),
-  (40,  '2025-50274', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Lab')),
-  (80,  '2025-50274', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Seminar')),
-  (650, '2025-50274', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Others')),
-  (98,  '2025-50274', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Administration')),
-  (177, '2025-50274', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Examination'));
+  -- ID2214 (2025-50341, P2)
+  ('2025-50341', 1, 24.0), -- Lecture
+  ('2025-50341', 2, 24.0), -- Lab
+  ('2025-50341', 3, 24.0), -- Tutorial
+  ('2025-50341', 5, 16.0), -- Other Overhead
+  ('2025-50341', 6, calc_admin_hours('2025-50341')), -- Admin (derived)
+  ('2025-50341', 7, calc_exam_hours('2025-50341')), -- Exam  (derived)
 
-INSERT INTO planned_activity (planned_hours, course_instance_id, teaching_activity_id) VALUES
-  (44,    '2025-50413', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Lecture')),
-  (64,    '2025-50413', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Seminar')),
-  (200,   '2025-50413', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Others')),
-  (73,    '2025-50413', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Administration')),
-  (140.75,'2025-50413', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Examination'));
+  -- SF1624 (2025-60104, P3)
+  ('2025-60104', 1, 40.0), -- Lecture
+  ('2025-60104', 4, 10.0), -- Seminar
+  ('2025-60104', 5, 20.0), -- Other Overhead
+  ('2025-60104', 6, calc_admin_hours('2025-60104')), -- Admin (derived)
+  ('2025-60104', 7, calc_exam_hours('2025-60104')), -- Exam  (derived)
 
-INSERT INTO planned_activity (planned_hours, course_instance_id, teaching_activity_id) VALUES
-  (12,  '2025-50341', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Lecture')),
-  (15,  '2025-50341', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Tutorial')),
-  (25,  '2025-50341', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Lab')),
-  (40,  '2025-50341', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Others')),
-  (67,  '2025-50341', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Administration')),
-  (119, '2025-50341', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Examination'));
+  -- ID2214 extra (2025-50399, P3)
+  ('2025-50399', 1, 12.0), -- Lecture
+  ('2025-50399', 2, 30.0), -- Lab
+  ('2025-50399', 3, 18.0), -- Tutorial
+  ('2025-50399', 5, 12.0), -- Other Overhead
+  ('2025-50399', 6, calc_admin_hours('2025-50399')), -- Admin (derived)
+  ('2025-50399', 7, calc_exam_hours('2025-50399')), -- Exam  (derived)
 
-INSERT INTO planned_activity (planned_hours, course_instance_id, teaching_activity_id) VALUES
-  (15,   '2025-60104', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Lecture')),
-  (25,   '2025-60104', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Tutorial')),
-  (100,  '2025-60104', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Others')),
-  (61,   '2025-60104', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Administration')),
-  (97.25,'2025-60104', (SELECT teaching_activity_id FROM teaching_activity WHERE activity_name='Examination'));
+  -- DD1310 (2025-60201, P4)
+  ('2025-60201', 1, 24.0), -- Lecture
+  ('2025-60201', 2, 24.0), -- Lab
+  ('2025-60201', 3, 16.0), -- Tutorial
+  ('2025-60201', 5, 24.0), -- Other Overhead
+  ('2025-60201', 6, calc_admin_hours('2025-60201')), -- Admin (derived)
+  ('2025-60201', 7, calc_exam_hours('2025-60201')); -- Exam  (derived)
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E1001', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50273' AND ta.activity_name IN ('Lecture','Others','Administration','Examination');
+INSERT INTO allocation (course_instance_id, teaching_activity_id, employee_id, allocated_hours) VALUES
+  -- IV1351 (2025-50273, P2 2025)
+  ('2025-50273', 1, 2, 25.0), -- Paris, Lecture
+  ('2025-50273', 1, 4, 15.0), -- Niharika, Lecture
+  ('2025-50273', 2, 5, 60.0), -- Brian, Lab
+  ('2025-50273', 3, 4, 15.0), -- Niharika, Tutorial
+  ('2025-50273', 3, 6, 10.0), -- Adam, Tutorial
+  ('2025-50273', 4, 2, 20.0), -- Paris, Seminar
+  ('2025-50273', 5, 2, 20.0), -- Paris, Overhead
+  ('2025-50273', 5, 4, 30.0), -- Niharika, Overhead
+  ('2025-50273', 6, 2, 30.0), -- Paris, Admin
+  ('2025-50273', 7, 3, 60.0),  -- Leif, Exam
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E1002', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50273' AND ta.activity_name IN ('Tutorial','Seminar');
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E1003', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50273' AND ta.activity_name='Lab';
+  -- IX1500 (2025-50413, P1 2025)
+  ('2025-50413', 1, 3, 40.0), -- Leif, Lecture
+  ('2025-50413', 3, 6, 10.0), -- Adam, Tutorial
+  ('2025-50413', 3, 5, 10.0), -- Brian, Tutorial
+  ('2025-50413', 5, 3, 15.0), -- Leif, Overhead
+  ('2025-50413', 5, 6, 10.0), -- Adam, Overhead
+  ('2025-50413', 6, 3, 10),  -- Leif, Admin
+  ('2025-50413', 7, 3, 140),  -- Leif, Exam
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E1001', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50274' AND ta.activity_name IN ('Lecture','Others','Administration','Examination');
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E1002', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50274' AND ta.activity_name IN ('Lecture','Tutorial','Administration');
+  -- ID2214 (2025-50341, P2 2025)
+  ('2025-50341', 1, 2, 10.0), -- Paris, Lecture
+  ('2025-50341', 2, 5, 24.0), -- Brian, Lab
+  ('2025-50341', 3, 4, 30.0), -- Niharika, Tutorial
+  ('2025-50341', 5, 2, 18.0), -- Paris, Overhead
+  ('2025-50341', 6, 2, 10.5),  -- Paris, Admin
+  ('2025-50341', 7, 4, 20.0),  -- Niharika, Exam
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E1003', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50274' AND ta.activity_name IN ('Tutorial','Lab');
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E1004', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50274' AND ta.activity_name='Lab';
+  -- SF1624 (2025-60104, P3 2025)
+  ('2025-60104', 1, 7, 10.0), -- Sara, Lecture
+  ('2025-60104', 1, 8,  8.0), -- Olof, Lecture
+  ('2025-60104', 4, 8, 10.0), -- Olof, Seminar
+  ('2025-60104', 4, 3, 10.0), -- Leif, Seminar
+  ('2025-60104', 5, 7, 20.0), -- Sara, Overhead
+  ('2025-60104', 6, 7, 10.0),  -- Sara, Admin
+  ('2025-60104', 7, 3, 30.0),  -- Leif, Exam
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E2002', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50274' AND ta.activity_name IN ('Seminar','Examination');
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E2003', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50274' AND ta.activity_name='Seminar';
+  -- ID2214 extra (2025-50399, P3 2025)
+  ('2025-50399', 1, 3, 15.0), -- Leif, Lecture
+  ('2025-50399', 2, 5, 20.0), -- Brian, Lab
+  ('2025-50399', 3, 6, 10.0), -- Adam, Tutorial
+  ('2025-50399', 5, 3, 12.0), -- Leif, Overhead
+  ('2025-50399', 6, 7, 42.0),  -- Sara, Admin
+  ('2025-50399', 7, 3, 100.0),  -- Leif, Exam
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E2001', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50413' AND ta.activity_name IN ('Lecture','Seminar','Administration','Examination');
 
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E2002', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50413' AND ta.activity_name='Examination';
-
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E2003', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50413' AND ta.activity_name='Others';
-
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E1002', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50341' AND ta.activity_name IN ('Lecture','Others','Administration','Examination');
-
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E1004', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50341' AND ta.activity_name IN ('Tutorial','Lab','Examination');
-
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E3003', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-50341' AND ta.activity_name='Lab';
-
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E3002', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-60104' AND ta.activity_name IN ('Lecture','Tutorial','Administration','Examination');
-
-INSERT INTO allocation (employee_id, planned_activity_id)
-SELECT 'E3003', pa.planned_activity_id
-FROM planned_activity pa
-JOIN teaching_activity ta ON ta.teaching_activity_id=pa.teaching_activity_id
-WHERE pa.course_instance_id='2025-60104' AND ta.activity_name='Others';
+  -- DD1310 (2025-60201, P4 2025)
+  ('2025-60201', 1, 2, 15.0), -- Paris, Lecture
+  ('2025-60201', 1, 4, 12.0), -- Niharika, Lecture
+  ('2025-60201', 2, 5, 18.0), -- Brian, Lab
+  ('2025-60201', 3, 6,  8.0), -- Adam, Tutorial
+  ('2025-60201', 3, 9,  8.0), -- Maja, Tutorial
+  ('2025-60201', 5, 2, 30.0), -- Paris, Overhead
+  ('2025-60201', 6, 4, 10.5),  -- Niharika, Admin
+  ('2025-60201', 7, 2, 300.0);  -- Paris, Exam
+         
 
 COMMIT;
