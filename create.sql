@@ -1,7 +1,8 @@
 CREATE TABLE constants (
  constant_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
- constant_description VARCHAR(200) NOT NULL,
+ constant_description VARCHAR(200) NOT NULL UNIQUE,
  constant_value DECIMAL(10,5) NOT NULL
+ 
 );
 
 
@@ -13,6 +14,8 @@ CREATE TABLE course_layout (
  hp DECIMAL(6, 3) NOT NULL,
  min_students INT NOT NULL,
  max_students INT NOT NULL
+ 
+ CONSTRAINT unique_course_code_version UNIQUE
 );
 
 
