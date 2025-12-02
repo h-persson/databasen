@@ -8,7 +8,7 @@ CREATE INDEX idx_planned_act_ci ON planned_activity(course_instance_id);
 
 ANALYZE;
 
-DROP MATERIALIZED VIEW IF EXISTS view_planned_hours;
+DROP VIEW IF EXISTS view_planned_hours;
 
 CREATE MATERIALIZED VIEW view_planned_hours AS
 SELECT 
@@ -35,4 +35,5 @@ ORDER BY ci.course_instance_id
 WITH DATA;
 
 -- Index på MVn för snabb sökning
+
 CREATE INDEX idx_mv_planned_year ON view_planned_hours(study_year);
