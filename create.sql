@@ -13,9 +13,9 @@ CREATE TABLE course_layout (
  version INT NOT NULL,
  hp DECIMAL(6, 3) NOT NULL,
  min_students INT NOT NULL,
- max_students INT NOT NULL
+ max_students INT NOT NULL,
  
- CONSTRAINT unique_course_code_version UNIQUE
+ CONSTRAINT unique_course_code_version UNIQUE (course_code, version)
 );
 
 
@@ -69,7 +69,7 @@ CREATE TABLE salary (
 
 CREATE TABLE skill (
  skill_id INT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
- skill_description VARCHAR(500) NOT NULL
+ skill_description VARCHAR(500) NOT NULL UNIQUE
 );
 
 
@@ -94,7 +94,7 @@ CREATE TABLE study_period (
 
 CREATE TABLE teaching_activity (
  teaching_activity_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
- activity_name VARCHAR(200) NOT NULL,
+ activity_name VARCHAR(200) NOT NULL UNIQUE,
  factor DECIMAL(10, 5) DEFAULT 1 NOT NULL
 );
 
@@ -118,7 +118,7 @@ CREATE TABLE planned_activity (
 
  PRIMARY KEY (course_instance_id,teaching_activity_id),
 
- FOREIGN KEY (course_instance_id) REFERENCES course_instance (course_instance_id),
+ FOREIGN KEY (course_instance_id) REFERENCES course_instance (course_instance_id) ON DELETE CASCADE,
  FOREIGN KEY (teaching_activity_id) REFERENCES teaching_activity (teaching_activity_id)
 );
 
@@ -131,8 +131,8 @@ CREATE TABLE allocation (
 
  PRIMARY KEY (course_instance_id,teaching_activity_id,employee_id),
 
- FOREIGN KEY (course_instance_id,teaching_activity_id) REFERENCES planned_activity (course_instance_id,teaching_activity_id),
- FOREIGN KEY (employee_id) REFERENCES employee (employee_id)
+ FOREIGN KEY (course_instance_id,teaching_activity_id) REFERENCES planned_activity (course_instance_id,teaching_activity_id)  ON DELETE CASCADE,
+ FOREIGN KEY (employee_id) REFERENCES employee (employee_id) ON DELETE CASCADE
 );
 
 
